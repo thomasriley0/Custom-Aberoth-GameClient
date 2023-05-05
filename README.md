@@ -4,8 +4,8 @@ A custom game client for popular MMORPG game Aberoth. The client features a laun
 The game client is developed with the framework Electron and built with the package electron-builder.
 
 To setup the client
-1. `git clone https://github.com/thomasriley0/Custom-Aberoth-GameClient.git smokeClient`
-2. `cd smokeClient` 
+1. `git clone https://github.com/thomasriley0/Custom-Aberoth-GameClient.git`
+2. `cd Custom-Aberoth-GameClient-main` 
 3. `npm install`
 
 To build the game client for Windows:
