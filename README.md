@@ -5,7 +5,7 @@ The game client is developed with the framework Electron and built with the pack
 
 To setup the client
 1. `git clone https://github.com/thomasriley0/Custom-Aberoth-GameClient.git`
-2. `cd Custom-Aberoth-GameClient-main` 
+2. `cd Custom-Aberoth-GameClient` 
 3. `npm install`
 
 To build the game client for Windows x64:
