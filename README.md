@@ -26,3 +26,10 @@ After building the app, navigate the /dir folder and run the .exe that was built
 
 Development Users: To run the game client from terminal for development use
 `npm run start`
+
+
+Images of the client
+
+![dd48e75d41ca36dca7d3053b72731e57](https://user-images.githubusercontent.com/129229020/236358904-263ddb44-c49f-41c7-aea2-e3fe94ca679a.png)
+
+![47ba98aab6099a81c56692f2580ca1c5](https://user-images.githubusercontent.com/129229020/236358915-75a029aa-2d52-4b9c-b23a-72449289f5bb.png)
