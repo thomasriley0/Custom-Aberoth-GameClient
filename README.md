@@ -8,7 +8,7 @@ To setup the client
 2. `cd Custom-Aberoth-GameClient-main` 
 3. `npm install`
 
-To build the game client for Windows:
+To build the game client for Windows x64:
 `npm run distWindows`
 
 
