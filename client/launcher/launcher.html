@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<head>
+  <title>Smoke Client</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="assets/css/launcher.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script type="text/javascript" src="assets/js/launch.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <header id="titlebar">
+    <div id="drag-region">
+    <div id="window-title">
+      <img  class="noselect" width="20px" height="20px" src="assets/img/smokelogo.svg" />
+      <span class="noselect">Smoke Client</span>
+    </div>
+    <div id="window-controls">
+  
+      <div class="button" id="min-button">
+        <img class="icon" srcset="assets/icons/min-w-10.png 1x, assets/icons/min-w-12.png 1.25x, assets/icons/min-w-15.png 1.5x, assets/icons/min-w-15.png 1.75x, assets/icons/min-w-20.png 2x, assets/icons/min-w-20.png 2.25x, assets/icons/min-w-24.png 2.5x, assets/icons/min-w-30.png 3x, assets/icons/min-w-30.png 3.5x" draggable="false" />
+      </div>
+  
+      <div class="button" id="restore-button">
+        <img class="icon" srcset="assets/icons/restore-w-10.png 1x, assets/icons/restore-w-12.png 1.25x, assets/icons/restore-w-15.png 1.5x, assets/icons/restore-w-15.png 1.75x, assets/icons/restore-w-20.png 2x, assets/icons/restore-w-20.png 2.25x, assets/icons/restore-w-24.png 2.5x, assets/icons/restore-w-30.png 3x, assets/icons/restore-w-30.png 3.5x" draggable="false" />
+      </div>
+  
+      <div class="button" id="close-button">
+        <img class="icon" srcset="assets/icons/close-w-10.png 1x, assets/icons/close-w-12.png 1.25x, assets/icons/close-w-15.png 1.5x, assets/icons/close-w-15.png 1.75x, assets/icons/close-w-20.png 2x, assets/icons/close-w-20.png 2.25x, assets/icons/close-w-24.png 2.5x, assets/icons/close-w-30.png 3x, assets/icons/close-w-30.png 3.5x" draggable="false" />
+      </div>
+  
+    </div>
+  </div>
+  </header>
+
+</head> 
+
+
+<body>
+  <div id="launcherContainer">
+    
+
+  <div id="launcherFlex">
+    <img class="flexItem" id="smokelogo" src="assets/img/smokelogo.svg" />
+    <label class="flexItem" for="username">USERNAME:</label>
+    <input class="flexItem" type="text" id="username">
+    <label class="flexItem"for="password">PASSWORD:</label>
+    <input class="flexItem"type="password" id="password">
+      <label class="flexItem"><select class="flexItem" id="selectAccountList">
+        <option value="auto">Select Account</option>
+      </select>
+      <button id="accountBtn" class="flexItem" onclick="toggleAccountManager()">EDIT</button>
+
+    </label>
+
+    <label class="flexItem"><select class="flexItem" id="selectProxyList">
+      <option value="auto">Select Proxy</option>
+    </select>
+    <button id="proxyBtn" class="flexItem" onclick="toggleProxyManager()">EDIT</button>
+
+  </label>
+
+    <label class="flexItem">FONT SIZE: <select class="flexItem"id="fontSize">
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14" selected>14</option>
+        <option value="16">16</option>
+        <option value="18">18</option>
+        <option value="20">20</option>
+        <option value="22">22</option>
+        <option value="24">24</option>
+        <option value="28">28</option>
+        <option value="36">36</option>
+        <option value="48">48</option>
+        <option value="72">72</option>
+      </select>
+    </label >
+    <label class="flexItem">SCREEN SIZE: <select class="flexItem" id="screenSize">
+        <option value="1/2">Half</option>
+        <option value="3/4">3/4</option>
+        <option value="1/1" selected>Normal</option>
+        <option value="5/4">1.25</option>
+        <option value="6/4">1.5</option>
+        <option value="7/4">1.75</option>
+        <option value="8/4">Double</option>
+        <option value="10/4">2.5</option>
+        <option value="12/4">Triple</option>
+      </select>
+    </label>
+
+    <label class="flexItem">
+      <input class="flexItem" type="checkbox" id="wideScreenCheckbox" value="1">WIDESCREEN </label>
+    <button id="loginBtn" class="flexItem" onclick="launch()">LOG IN</button>
+  </div>
+
+  <div id="proxyManager" class="hidden">
+    <img class="flexItem" id="smokelogo" src="assets/img/smokelogo.svg" />
+    <label class="flexItem" for="proxyIp">IP:</label>
+    <input class="flexItem" type="text" id="proxyIp">
+    <label class="flexItem"for="proxyPort">PORT:</label>
+    <input class="flexItem"type="text" id="proxyPort">
+    <label class="flexItem">
+        <input type="checkbox" id="proxyAuthCheckbox">AUTHENTIFICATION?
+      </label>
+      <label class="flexItem" for="proxyUsername">USERNAME:</label>
+      <input class="flexItem" type="text" disabled id="proxyUsername">
+      <label class="flexItem"for="proxyPassword">PASSWORD:</label>
+      <input class="flexItem"type="text" disabled id="proxyPassword">
+      <button id="addProxyBtn" class="flexItem" onclick="addProxy()">ADD PROXY</button>
+      <label id="deleteProxyLabel" class="flexItem">DELETE <select class="flexItem" id="deleteProxyList">
+        <option value="auto">Select Proxy</option> 
+      </select>
+      <button id="deleteProxyBtn" class="flexItem" onclick="deleteProxy()">DELETE</button>
+    </label>
+      <button id="closeManagerBtn" class="flexItem" onclick="toggleProxyManager()">CLOSE PROXY MANAGER</button>
+    
+  </div>
+</div>
+
+<div id="accountManager" class="hidden">
+  <img class="flexItem" id="smokelogo" src="assets/img/smokelogo.svg" />
+  <label class="flexItem" for="username">USERNAME:</label>
+  <input class="flexItem" type="text" id="managerUsername">
+  <label class="flexItem"for="password">PASSWORD:</label>
+  <input class="flexItem"type="text" id="managerPassword">
+
+    <button id="addAccountBtn" class="flexItem" onclick="addAccount()">ADD ACCOUNT</button>
+    <label id="deleteAccountLabel" class="flexItem">DELETE <select class="flexItem" id="deleteAccountList">
+      <option value="auto">Select ACCOUNT</option> 
+    </select>
+    <button id="deleteAccountBtn" class="flexItem" onclick="deleteAccount()">DELETE</button>
+  </label>
+    <button id="closeManagerBtn" class="flexItem" onclick="toggleAccountManager()">CLOSE ACCOUNT MANAGER</button>
+  
+</div>
+</div>
+
+
+
+<script type="text/javascript" src="assets/js/proxyManager.js"></script>
+<script type="text/javascript" src="assets/js/accountManager.js"></script>
+  
+<script>
+  require('./assets/js/renderer.js')
+</script>
+
+
+</body>
+</html>

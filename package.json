@@ -1,0 +1,51 @@
+{
+  "name": "smoke-client",
+  "version": "1.0.0",
+  "description": "Smoke Client",
+  "main": "main.js",
+  "author": "Thomas Riley",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "packWindows": "electron-builder --dir --win --x64",
+    "distWindows": "electron-builder --win --x64",
+    "packMacM1": "electron-builder --mac --arm64 --dir",
+    "distMacM1": "electron-builder --mac --arm64",
+    "postinstall": "electron-builder install-app-deps",
+    "packIntelMac": "electron-builder --mac --x64 --dir",
+    "distIntelMac": "electron-builder --mac --x64"
+  },
+  "devDependencies": {
+    "electron": "^22.0.0",
+    "electron-builder": "^23.6.0",
+    "electron-updater": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.smoke.app",
+    "productName": "Smoke Client",
+    "copyright": "Copyright © 2022 Smoke",
+    "mac": {
+      "target": "dmg",
+      "icon": "buildIcons/smokeIcon.icns"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "buildIcons/smokeIcon.ico"
+    },
+    "dmg": {
+      "backgroundColor": "#353839",
+      "window": {
+        "width": 800,
+        "height": 400
+      }
+    }
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.9",
+    "axios": "^1.2.1",
+    "https-proxy-agent": "^5.0.1",
+    "node-machine-id": "^1.1.12",
+    "sweetalert2": "^11.7.0",
+    "ws": "^8.12.0"
+  }
+}

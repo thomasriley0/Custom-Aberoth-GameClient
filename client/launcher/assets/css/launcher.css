@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap');
+
+:root {
+    --accent-color: rgba(241,111,11,255);
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  background:rgba(0,0,0, 0.9);
+  font-family: 'Oswald', sans-serif;
+  
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/*Launcher Flex Box */
+
+#launcherFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    
+}
+
+#smokelogo {
+    height: 110px;
+    width: 80px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none; 
+
+   
+}
+
+label {
+    color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none; 
+}
+
+input {
+    color: rgba(0,0,0, 0.7);
+    outline: none;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 2px;
+    border-style: none;
+    font-family: 'Oswald', sans-serif;
+    
+}
+
+select {
+    outline: none;
+    color: white;
+    background-color: var(--accent-color)    ;
+    border-radius: 2px;
+    border-style: none;
+    font-family: 'Oswald', sans-serif;
+}
+
+button {
+    outline: none;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    background-color: var(--accent-color)   ;
+    border-radius: 2px;
+    border-style: none;
+}
+
+.flexItem {
+    margin-top: 8px;
+}
+
+
+#proxyList {
+    font-size: 11px;
+}
+
+#proxyBtn {
+    width: 35px;
+    font-size: 11px;
+}
+
+/*Proxy Flex Box */
+
+#accountManager {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+#deleteAccountBtn {
+    font-size: 11px;
+}
+
+#closeManagerBtn{ 
+    margin-top: 10px;
+}
+
+#deleteAccountLabel {
+    font-size: 13px;
+}
+
+#proxyManager {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    
+}
+
+input:disabled {
+    background-color: grey;
+}
+
+#deleteProxyBtn {
+    font-size: 11px;
+}
+
+#deleteProxyLabel {
+    font-size: 13px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(241, 111, 11, 0.5);
+}
+
+input[type="checkbox"]{
+    cursor: pointer;
+}
+
+select {
+    cursor: pointer;
+}
+

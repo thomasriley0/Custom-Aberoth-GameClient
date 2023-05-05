@@ -1,0 +1,64 @@
+
+.settingsSection {
+    position: absolute;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.sectionHeader {
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.hidden { 
+    visibility:hidden
+}
+
+.settingsLabel{
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.settingsForm {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.settingsFormFlex{
+    display: flex;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.settingsToggleBtn {
+    outline: none;
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    background-color: white   ;
+    border-radius: 2px;
+    border-style: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.settingsTextInput{
+    width: 80px;
+    outline: none;
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    background-color: white   ;
+    border-radius: 2px;
+    border-style: none;
+    cursor: cursor;
+    font-size: 12px;
+}
+
+
+.settingsToggleBtn:hover {
+    background-color: rgba(241, 111, 11, 0.5);
+}
