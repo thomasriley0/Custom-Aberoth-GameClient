@@ -27,6 +27,8 @@ After building the app, navigate the /dir folder and run the .exe that was built
 Development Users: To run the game client from terminal for development use
 `npm run start`
 
+I also developed a module using a computer vision library opencv.js to determine the players location by template matching the current picture of our game in a large image. You can find that module [here](https://github.com/thomasriley0/Computer-Vision-Experiment)
+
 
 Images of the client
 
