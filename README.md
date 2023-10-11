@@ -7,6 +7,7 @@ To setup the client
 1. `git clone https://github.com/thomasriley0/Custom-Aberoth-GameClient.git`
 2. `cd Custom-Aberoth-GameClient` 
 3. `npm install`
+4. Run dev script or build script
 
 To build the game client for Windows x64:
 `npm run distWindows`
