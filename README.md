@@ -1,5 +1,5 @@
 # Custom-Aberoth-GameClient
-A custom game client for popular MMORPG game Aberoth. The client features a launcher with proxy support and a game client with custom scripts.
+A custom game client for popular MMORPG game Aberoth. The client features a launcher with HTTP proxy support and a game client with custom scripts.
 
 The game client is developed with the framework Electron and built with the package electron-builder.
 
