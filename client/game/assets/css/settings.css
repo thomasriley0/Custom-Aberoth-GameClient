@@ -13,7 +13,7 @@
 }
 
 .hidden { 
-    visibility:hidden
+    display:none;
 }
 
 .settingsLabel{
@@ -47,18 +47,11 @@
 }
 
 .settingsTextInput{
-    width: 80px;
+    width: 60px;
     outline: none;
     font-family: 'Oswald', sans-serif;
-    color: black;
-    background-color: white   ;
     border-radius: 2px;
     border-style: none;
     cursor: cursor;
     font-size: 12px;
-}
-
-
-.settingsToggleBtn:hover {
-    background-color: rgba(241, 111, 11, 0.5);
 }

@@ -617,7 +617,11 @@ function Queue() {
 function App(proxy) {
     this.canvas = document.getElementById('screen');
     this.screenkey = document.getElementById('screenkey');
+
+    //define proxy variable for http proxy support
     this.proxy = proxy;
+    //define sessionActive bool to false
+    this.sessionActive = false;
 
     try {
         var a = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
@@ -1088,6 +1092,18 @@ App.prototype.removeEvents = function(ele) {
 };
 
 
+App.prototype.resizeClient = function resizeClient() {
+    if(document.getElementById("expand-button-icon").classList.contains("leftArrow")) {
+        document.getElementById("expand-button-icon").classList.add("rightArrow")
+        document.getElementById("expand-button-icon").classList.remove("leftArrow")
+        document.getElementById("expand-button-icon").src = "assets/static/rightArrow.svg"
+
+    }
+
+    ipcRenderer.send("resizeClient", {width: this.canvas.width, height: this.canvas.height + 29});
+}
+
+
 App.prototype.resizeElements = function(sizeX, sizeY) {
 
 
@@ -1096,23 +1112,18 @@ App.prototype.resizeElements = function(sizeX, sizeY) {
         if (!sizeX) sizeX = this.game.applyScaleUp(960, true);
         if (!sizeY) sizeY = this.game.applyScaleUp(540, true);
     }
-    //Insert End
+   //Insert End 
     else {
         if (!sizeX) sizeX = this.game.applyScaleUp(640, true);
         if (!sizeY) sizeY = this.game.applyScaleUp(480, true);
     }
 
-    if(document.getElementById("expand-button-icon").classList.contains("leftArrow")) {
-        document.getElementById("expand-button-icon").classList.add("rightArrow")
-        document.getElementById("expand-button-icon").classList.remove("leftArrow")
-        document.getElementById("expand-button-icon").src = "assets/static/rightArrow.svg"
-
-    }
-
-    ipcRenderer.send("resizeClient", {width: sizeX, height: sizeY + 29});
-
     this.canvas.width = sizeX;
     this.canvas.height = sizeY;
+    //modification to resize the client
+    this.resizeClient()
+
+
 
 };
 
@@ -1414,6 +1425,11 @@ App.prototype.keyUp = function(event) {
     return this.doNothing(event);
 };
 App.prototype.mouseDown = function(event) {
+    
+    //if input is enabled, allow user to click canvas to escape the input
+    if (document.activeElement.tagName == "INPUT") {
+        return;
+    }
 
 
     if (this.screenkey)
@@ -1780,10 +1796,23 @@ App.prototype.keyCode2Ascii = function(keyCode, shift) {
 var GameClientRef;
 
 function GameClient(app) {
-
+    
 
     this.app = app;
     this.preCanvas = document.createElement("canvas");
+
+    //intialize click listeners for elements containing each mod in the menu list
+    this.modHandler();
+
+    //initalize variables needed for autoFollow module
+    this.target = "";
+    this.autoFollowBool = false;
+    this.autoAttackInterval = null;
+    this.lookForTargetInterval = null;
+    this.lookForPotionInterval = null;
+    this.pickupPotionBool = false;
+    this.attacking = false;
+    
 
     var b = document.location.href;
     var c = b.indexOf('/', 8);
@@ -2074,10 +2103,14 @@ GameClient.prototype.run = function run(name, pwd, scaleUp, scaleDown, fontSize,
 };
 
 GameClient.prototype.onServerMessage = function onServerMessage(serverMessage) {
-    if (this.shuttingDown) return;
+    if (this.shuttingDown) { 
+        app.sessionActive = false;
+        return;
+    };
 
 
     try {
+        app.sessionActive = true;
         var Db = 0;
         while (Db < serverMessage.length) {
             if (serverMessage.length < Db + 3) {
@@ -2322,8 +2355,10 @@ GameClient.prototype.onOneFrameMessage = function onOneFrameMessage() {
                             this.activeSubWindow.drawExtraXWhenScaling,
                             this.activeSubWindow.drawExtraYWhenScaling);
 
+
                         if (Gh != 0 && Gi > 1)
                             this.posY += Gh * this.activeSubWindow.fillRectSizeY * (Gi - 1);
+
 
                         break;
 
@@ -2375,7 +2410,6 @@ GameClient.prototype.onOneFrameMessage = function onOneFrameMessage() {
                         this.whereInCommand += 6;
                         break;
                     case this.Types.FrameCommands.DRAW_PIXEL:
-
                         this.drawFilledRect(
                             this.intFromTwoCharString(mix, this.whereInCommand + 1),
                             this.intFromTwoCharString(mix, this.whereInCommand + 3),
@@ -2993,6 +3027,12 @@ GameClient.prototype.drawFilledRect = function drawFilledRect(x, y, HL, HM, draw
     HL = HY - HJ;
     HM = HZ - HK;
 
+
+    //added for potion handler
+    if (this.pickupPotionBool) {
+        this.pickupPotion(HJ, HK)
+    }
+
     this.activeSubWindow.fillRect(HJ, HK, HL, HM);
     this.updatePaintArguments(HJ + this.activeSubWindow.x, HK + this.activeSubWindow.y, HL, HM);
 };
@@ -3007,6 +3047,9 @@ GameClient.prototype.stop = function stop(Dj, reload) {
         this.connection.shutDown();
         this.connection = null;
     }
+
+
+    app.sessionActive = false;
 
     var suppress = Dj || (this.connection && this.connection.suppressShutdownMessage);
     if (!suppress)
@@ -3535,20 +3578,26 @@ function IB(IC, ID, Ib) {
     return Gz;
 }
 
-
-function I2(playerNameCookie) {
-    var d = [];
-
+function getCookiesFromJson(accountCookie) {
     var file = path.join(__dirname, 'assets/cookies.json');
     var JSONCookies = fs.readFileSync(file, 'utf8');
-    var accountCookie = ""
 
     JSONCookies = JSON.parse(JSONCookies);
     for (key in JSONCookies) {
-        if (JSONCookies[key]["username"] == username.toLowerCase()) {
+        if (JSONCookies[key]["username"] == username) {
             accountCookie = JSONCookies[key]["cookie"]
         } 
     }
+
+    return accountCookie;
+
+}
+
+function I2(playerNameCookie) {
+    var d = [];
+    var accountCookie = "";
+
+    accountCookie = getCookiesFromJson(accountCookie);
 
     var e = accountCookie.split(";");
     playerNameCookie = RegExp("^\\s*" + playerNameCookie + "=\\s*(.*?)\\s*$");
@@ -3844,8 +3893,6 @@ function SubWindow(client, id, x, y, width, height) {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.currentColor = null;
-
 
 
     this.textLeftGap = this.Types.Misc.BASE_TEXT_SCREEN_EDGE_GAP + 1;
@@ -3952,8 +3999,11 @@ SubWindow.prototype.createOnScreenText = function createOnScreenText(rawText, ju
         rgba: rgba,
         specialAttributes: specialAttributes
     };
+
     return result;
 };
+
+
 
 SubWindow.prototype.createTextLineAndInfo = function createTextLineAndInfo(text, yOffset, width) {
     return {
@@ -4139,6 +4189,14 @@ SubWindow.prototype.processOnScreenTextCommand = function processOnScreenTextCom
                 this.forceTextOnScreen(baseLine, Cp, Cr);
 
             var newText = this.createOnScreenText(text, justification, DI, baseLine, Cp, HU, HV, specialAttributes);
+            //pass all new text that is to be written to the screen to a handler,
+            //so that all text can be analyzed in O(N) Time.
+            //if autoFollow is enabled and a target is found, call the function
+            this.handleIncomingText(newText);
+            if (app.game.autoFollowBool) {
+               this.autoFollow()
+            }
+            
             if (!this.allOnScreenText)
                 this.allOnScreenText = {};
             this.allOnScreenText[HO] = newText;

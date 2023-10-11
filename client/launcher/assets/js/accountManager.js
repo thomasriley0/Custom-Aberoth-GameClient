@@ -1,4 +1,3 @@
-var file = path.join(__dirname, 'assets/JSON/accounts.json');
 
 function toggleAccountManager() {
     document.getElementById("launcherFlex").classList.toggle("hidden")
@@ -6,6 +5,9 @@ function toggleAccountManager() {
 }
 
 function populateAccountSelectList() {
+
+    var file = path.join(__dirname, 'assets/JSON/accounts.json');
+
 
     fs.readFile(file, "utf8", (err, JSONAccounts) => {
         if (err) {
@@ -55,6 +57,9 @@ function populateAccountSelectList() {
 
 function deleteAccount() {
     //read from proxies.json
+
+    var file = path.join(__dirname, 'assets/JSON/accounts.json');
+
     fs.readFile(file, "utf8", (err, accountsJSON) => {
         if (err) {
             console.log("File read failed:", err);
@@ -93,6 +98,9 @@ function addAccount() {
     var username = document.getElementById("managerUsername").value
     var password = document.getElementById("managerPassword").value
     var duplicate = false
+
+    var file = path.join(__dirname, 'assets/JSON/accounts.json');
+
 
 
     fs.readFile(file, "utf8", (err, accountsJSON) => {

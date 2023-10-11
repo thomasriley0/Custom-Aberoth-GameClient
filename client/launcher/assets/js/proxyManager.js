@@ -1,8 +1,6 @@
 const fs = require("fs");
 const path = require('path')
 
-var file = path.join(__dirname, 'assets/JSON/proxies.json');
-
 document.getElementById("proxyAuthCheckbox").addEventListener("click", toggleProxyAuth)
 
 
@@ -28,6 +26,9 @@ function addProxy() {
     var username = document.getElementById("proxyUsername").value
     var password = document.getElementById("proxyPassword").value
     var duplicate = false
+
+    var file = path.join(__dirname, 'assets/JSON/proxies.json');
+
 
     //read from proxies.json
     fs.readFile(file, "utf8", (err, JSONProxies) => {
@@ -138,6 +139,8 @@ function addProxy() {
 
 
 function deleteProxy() {
+    var file = path.join(__dirname, 'assets/JSON/proxies.json');
+
     //read from proxies.json
     fs.readFile(file, "utf8", (err, proxiesJSON) => {
         if (err) {
@@ -175,6 +178,8 @@ function deleteProxy() {
 
 
 function populateProxySelectList() {
+    var file = path.join(__dirname, 'assets/JSON/proxies.json');
+
 
     //read from proxies.json
     fs.readFile(file, "utf8", (err, JSONProxies) => {

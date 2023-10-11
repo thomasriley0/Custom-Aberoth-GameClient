@@ -8,9 +8,9 @@ var javaversion;
 var proxy;
 var datacookies = [];
 
-loginInterval = window.setInterval(login, 100)
-
 function login() {
+  datacookies = []
+  
     if (proxy != "" || proxy != null) {
         window.autoLoad = {
         username: username,
@@ -24,70 +24,41 @@ function login() {
     };
 
      app = new App(proxy)
-     
-    var file = path.join(__dirname, 'assets/cookies.json');
+    
+     var file = path.join(__dirname, 'assets/cookies.json');
+
     var JSONCookies = fs.readFileSync(file, 'utf8');
     JSONCookies = JSON.parse(JSONCookies);
     var JSONCookiesLength = Object.keys(JSONCookies).length
-
-
 
     if (datacookies.length != 0 && username != "") {
       var found = false;
       for (key in JSONCookies) {
         if (JSONCookies[key]["username"] == username.toLowerCase()) {
-          JSONCookies[key]["cookie"] = datacookies.join("".toString());
           found = true;
           break;
         }
       }
-
       if (!found) {
         JSONCookies[JSONCookiesLength] = {"username": username.toLowerCase(), "cookie": datacookies.join("".toString())}
       }
     }
-    
     const jsonString = JSON.stringify(JSONCookies)
-
     fs.writeFileSync(file, jsonString)
-
-     clearInterval(loginInterval)
-    }
-   
+    }  
 }
-
-
-
-var sessionActive = true;
-
-setInterval(function () {
-  sessionActive = true;
-  var onScreenMessage = app.game.onScreenMessage
-  try {
-    //check text on screen
-    if (onScreenMessage == "Press R to respawn, or Q to quit to the main menu.") {
-      sessionActive = false;
-    }
-
-  } catch {
-    sessionActive = false;
-  }
-}, 20);
-
 //press r to respawn handler when session is no longer active
 window.addEventListener("keydown", function (event) {
     if (event.key == "r" || event.key == "R") {
-      if (!sessionActive) {
+      if (!app.sessionActive) {
         login();
       }
     }
   });
-
-
-  //press q to respawn handler when session is no longer active
+//press q to respawn handler when session is no longer active
 window.addEventListener("keydown", function (event) {
     if (event.key == "q" || event.key == "Q") {
-      if (!sessionActive) {
+      if (!app.sessionActive) {
         ipcRenderer.send("logout")
         
       }

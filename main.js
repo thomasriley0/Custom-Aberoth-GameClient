@@ -1,13 +1,11 @@
 const electron = require("electron");
 const { ipcMain } = require("electron");
-const { app, BrowserWindow} = electron;
-const { machineIdSync } = require("node-machine-id");
-const axios = require("axios");
-require('@electron/remote/main').initialize()
+const { app, BrowserWindow } = electron;
+require("@electron/remote/main").initialize();
 
 var client;
 const createClientWindow = () => {
- var launcherPos = launcher.getPosition()
+  var launcherPos = launcher.getPosition();
   client = new BrowserWindow({
     width: 100,
     height: 100,
@@ -16,28 +14,24 @@ const createClientWindow = () => {
     frame: false,
     autoHideMenuBar: true,
     fullscreen: false,
-    fullscreenable: false,  
+    fullscreenable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      devTools: false,
       enableRemoteModule: true,
     },
   });
 
-
   require("@electron/remote/main").enable(client.webContents);
 
-  client.webContents.openDevTools();
-
-
-  client.setPosition(launcherPos[0], launcherPos[1])
+  client.setPosition(launcherPos[0], launcherPos[1]);
 
   client.loadURL("file://" + __dirname + "/client/game/game.html");
 
   client.on("close", () => {
     if (launcher == null) {
-      createLauncherWindow()
+      createLauncherWindow();
     }
     client = null;
   });
@@ -58,17 +52,16 @@ const createLauncherWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      devTools: false,
     },
   });
 
   if (client != null) {
-    clientPos = client.getPosition()
-    launcher.setPosition(clientPos[0], clientPos[1])
+    clientPos = client.getPosition();
+    launcher.setPosition(clientPos[0], clientPos[1]);
   }
 
   require("@electron/remote/main").enable(launcher.webContents);
-
 
   launcher.loadURL("file://" + __dirname + "/client/launcher/launcher.html");
 
@@ -77,11 +70,10 @@ const createLauncherWindow = () => {
   });
 };
 
-
 app.on("ready", () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-          createLauncherWindow();
-        }
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createLauncherWindow();
+  }
 });
 
 app.on("activate", () => {
@@ -98,22 +90,52 @@ app.on("window-all-closed", () => {
 ipcMain.on("launchClient", (event, data) => {
   if (BrowserWindow.getAllWindows().length === 1) {
     createClientWindow();
-    launcher.close()
+    launcher.close();
   }
- 
 
   let win = BrowserWindow.getFocusedWindow();
-  win.webContents.executeJavaScript('username="' + data["username"]  + '"' + ";" +
-    'password="' + data["password"]  + '"' + ';' + 
-    'scaleup="' + data["scaleUp"]  + '"' + ';' +
-    'scaledown="' + data["scaleDown"]  + '"' + ';' +
-    'fontsize="' + data["fontSize"]  + '"' + ';' +
-    'screendefinition="' + data["screenDefinition"]  + '"' + ';' +
-    'ipaddress="' + "192.99.201.128" + '"' + ';' +
-    'javaversion="' + "js_mobile"  + '"'+ ';' + 
-    'proxy="' + data["proxy"]  + '"' + ";", true).then(console.log('JavaScript Executed Successfully'));
+  win.webContents
+    .executeJavaScript(
+      'username="' +
+        data["username"] +
+        '"' +
+        ";" +
+        'password="' +
+        data["password"] +
+        '"' +
+        ";" +
+        'scaleup="' +
+        data["scaleUp"] +
+        '"' +
+        ";" +
+        'scaledown="' +
+        data["scaleDown"] +
+        '"' +
+        ";" +
+        'fontsize="' +
+        data["fontSize"] +
+        '"' +
+        ";" +
+        'screendefinition="' +
+        data["screenDefinition"] +
+        '"' +
+        ";" +
+        'ipaddress="' +
+        "192.99.201.128" +
+        '"' +
+        ";" +
+        'javaversion="' +
+        "js_mobile" +
+        '"' +
+        ";" +
+        'proxy="' +
+        data["proxy"] +
+        '"' +
+        ";",
+      true
+    )
+    .then(win.webContents.executeJavaScript("login();"));
 });
-
 
 ipcMain.on("resizeClient", (event, data) => {
   client.setSize(data["width"], data["height"]);
@@ -122,8 +144,8 @@ ipcMain.on("resizeClient", (event, data) => {
 ipcMain.on("logout", (event, data) => {
   if (client != null) {
     if (BrowserWindow.getAllWindows().length <= 1) {
-      createLauncherWindow()
+      createLauncherWindow();
     }
-    client.close()
+    client.close();
   }
 });
